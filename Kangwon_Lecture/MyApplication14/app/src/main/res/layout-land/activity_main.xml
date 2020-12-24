@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center|top"
+    android:orientation="vertical">
+
+    <fragment
+        android:layout_weight="2"
+        android:id="@+id/frag_countries"
+        android:name="com.example.myapplication.MainFragment"
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_main"
+        tools:ignore="Suspicious0dp" />
+    <fragment
+        android:layout_weight="1"
+        android:id="@+id/frag_country"
+        android:name="com.example.myapplication.CountryFragment"
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_country"
+        tools:ignore="Suspicious0dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Countries in the World"
+        android:padding="20sp"
+        android:layout_margin="20sp"
+        android:textSize="30sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click a flag to learn about the country"
+        android:textSize="20sp"
+        android:layout_marginBottom="30sp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_margin="10sp"
+                android:layout_width="match_parent">
+
+                <ImageButton
+                    android:id="@+id/button1"
+                    android:src="@drawable/argentina"
+                    android:onClick="flagOnClicked"
+                    android:tag="Argentina"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+                <ImageButton
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:onClick="flagOnClicked"
+                    android:src="@drawable/austrailia"
+                    android:tag="Austrailia" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_margin="10sp">
+
+                <ImageButton
+                    android:id="@+id/button3"
+                    android:src="@drawable/brazil"
+                    android:onClick="flagOnClicked"
+                    android:tag="Brazil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+                <ImageButton
+                    android:id="@+id/button4"
+                    android:src="@drawable/canada"
+                    android:onClick="flagOnClicked"
+                    android:tag="Canada"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_margin="10sp">
+
+                <ImageButton
+                    android:id="@+id/button5"
+                    android:src="@drawable/china"
+                    android:onClick="flagOnClicked"
+                    android:tag="China"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+                <ImageButton
+                    android:id="@+id/button6"
+                    android:src="@drawable/france"
+                    android:onClick="flagOnClicked"
+                    android:tag="France"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_margin="10sp">
+
+                <ImageButton
+                    android:id="@+id/button7"
+                    android:src="@drawable/germany"
+                    android:onClick="flagOnClicked"
+                    android:tag="Germany"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+                <ImageButton
+                    android:id="@+id/button8"
+                    android:src="@drawable/india"
+                    android:onClick="flagOnClicked"
+                    android:tag="india"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_margin="10sp">
+
+                <ImageButton
+                    android:id="@+id/button9"
+                    android:src="@drawable/italy"
+                    android:onClick="flagOnClicked"
+                    android:tag="Italy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+                <ImageButton
+                    android:id="@+id/button10"
+                    android:src="@drawable/korea"
+                    android:onClick="flagOnClicked"
+                    android:tag="Korea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_margin="10sp">
+
+                <ImageButton
+                    android:id="@+id/button11"
+                    android:src="@drawable/mexico"
+                    android:onClick="flagOnClicked"
+                    android:tag="Mexico"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+                <ImageButton
+                    android:id="@+id/button12"
+                    android:src="@drawable/russia"
+                    android:onClick="flagOnClicked"
+                    android:tag="Russia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_margin="10sp">
+
+                <ImageButton
+                    android:id="@+id/button13"
+                    android:src="@drawable/spain"
+                    android:onClick="flagOnClicked"
+                    android:tag="Spain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+                <ImageButton
+                    android:id="@+id/button14"
+                    android:src="@drawable/turkey"
+                    android:onClick="flagOnClicked"
+                    android:tag="Turkey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_margin="10sp">
+
+                <ImageButton
+                    android:id="@+id/button15"
+                    android:src="@drawable/uk"
+                    android:onClick="flagOnClicked"
+                    android:tag="UK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+                <ImageButton
+                    android:id="@+id/button16"
+                    android:src="@drawable/usa"
+                    android:onClick="flagOnClicked"
+                    android:tag="USA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"/>
+
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
+
+</LinearLayout>

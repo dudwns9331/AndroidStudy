@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "923783535013",
+    "firebase_url": "https://directtalk9-f9a52-default-rtdb.firebaseio.com",
+    "project_id": "directtalk9-f9a52",
+    "storage_bucket": "directtalk9-f9a52.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923783535013:android:83f99e21ed2894bc7ab04c",
+        "android_client_info": {
+          "package_name": "gujc.directtalk9"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923783535013-vdbn15js5f94l9kuo2d4dhte691a9mn4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4nb8IJ_-rSQrXs5NABfOJVMywkYknn-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923783535013-vdbn15js5f94l9kuo2d4dhte691a9mn4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

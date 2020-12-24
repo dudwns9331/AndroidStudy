@@ -1,0 +1,9 @@
+Mercury, Mercury is the smallest and innermost planet in the Solar System.
+Venus, Venus is the second planet from the Sun, orbiting it every 224.7 Earth days.
+Earth, Where we are
+Mars, Mars is the fourth planet from the Sun and the second-smallest planet in the Solar System after Mercury,
+Jupiter, Jupiter is the fifth planet from the Sun and the largest in the Solar System.
+Saturn, Saturn is the sixth planet from the Sun and the second-largest in the Solar System, after Jupiter.
+Uranus, Uranus (from the Latin name Ūranus for the Greek god Οὐρανός) is the seventh planet from the Sun.
+Neptune, Neptune is the eighth and farthest known planet from the Sun in the Solar System.
+Pluto, Pluto (minor planet designation: 134340 Pluto) is a dwarf planet in the Kuiper belt, a ring of bodies beyond Neptune

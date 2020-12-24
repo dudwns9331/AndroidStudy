@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/m1"
+        android:title="음악중지" />
+    <item
+        android:id="@+id/m2"
+        android:title="음악 재생"/>
+    <item
+        android:id="@+id/m3"
+        android:title="로그아웃"/>
+    <item
+        android:id="@+id/m4"
+        android:title="사진 첨부/보기"/>
+</menu>
+

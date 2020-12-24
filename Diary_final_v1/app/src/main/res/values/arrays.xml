@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="age">
+        <item>10세 이하</item>
+        <item>10세 ~ 20세</item>
+        <item>20세 ~ 30세</item>
+        <item>30세 ~ 40세</item>
+        <item>40세 이상</item>
+    </string-array>
+
+
+</resources>
+

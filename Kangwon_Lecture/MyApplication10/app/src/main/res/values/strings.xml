@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Board</string>
+    <string-array name="boards">
+        <item>반갑습니다~~</item>
+        <item>드라마 추천좀</item>
+        <item>이거 무슨 게임이에요??</item>
+        <item>안녕하세요 18학번 컴퓨터과학과 안영준 입니다.</item>
+    </string-array>
+</resources>

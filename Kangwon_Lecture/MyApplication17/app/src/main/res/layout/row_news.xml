@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:orientation="vertical"
+    >
+
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="12dp"
+        card_view:cardCornerRadius="4dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/ImageView_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:background="@null"
+                    android:layout_centerInParent="true"
+                    fresco:placeholderImage="@mipmap/ic_launcher"
+                    />
+
+
+                <TextView
+                    android:id="@+id/TextView_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="cat"
+                    android:paddingRight="6dp"
+                    android:paddingLeft="6dp"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:background="#70000000"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:layout_alignParentBottom="true"
+                    >
+                </TextView>
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/TextView_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="text123123123"
+                android:maxLines="2"
+                android:paddingRight="6dp"
+                android:paddingLeft="6dp"
+                android:textSize="12sp"
+                android:ellipsize="end"
+                >
+            </TextView>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

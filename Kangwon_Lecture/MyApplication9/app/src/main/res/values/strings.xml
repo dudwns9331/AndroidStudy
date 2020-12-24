@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string-array name="list_name">
+        <item>소설</item>
+        <item>시</item>
+        <item>수필</item>
+        <item>산문</item>
+        <item>극본</item>
+    </string-array>
+</resources>

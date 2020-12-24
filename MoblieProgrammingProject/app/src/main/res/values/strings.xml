@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MoblieProgrammingProject</string>
+    <string-array name="list">
+        <item>The Awakening</item>
+        <item>Forgiveness</item>
+        <item>One Night Away</item>
+    </string-array>
+</resources>
