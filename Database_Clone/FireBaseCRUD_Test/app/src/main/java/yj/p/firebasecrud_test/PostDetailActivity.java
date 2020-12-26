@@ -3,8 +3,11 @@ package yj.p.firebasecrud_test;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -141,6 +144,19 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 });
     }
 
+    private static class CommentViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView authorView;
+        public TextView bodyView;
+
+        public CommentViewHolder(View itemView) {
+            super(itemView);
+
+            authorView = itemView.findViewById(R.id.commentAuthor);
+            bodyView = itemView.findViewById(R.id.commentBody);
+        }
+    }
+
     private static class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
 
         private Context mContext;
@@ -171,22 +187,76 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                     Log.d(TAG, "onChildChanged:" + datasnapshot.getKey());
                     Comment newComment = datasnapshot.getValue(Comment.class);
                     String commentKey = datasnapshot.getKey();
+
+                    int commentIndex = mCommentIds.indexOf(commentKey);
+
+                    if (commentIndex > -1) {
+                        mComments.set(commentIndex, newComment);
+                        notifyItemChanged(commentIndex);
+                    } else {
+                        Log.w(TAG, "onChildChanged:unknown_chil: " + commentKey);
+                    }
                 }
 
                 @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                public void onChildRemoved(@NonNull DataSnapshot datasnapshot) {
+                    Log.d(TAG, "onChildRemoved:" + datasnapshot.getKey());
+
+                    String commentKey = datasnapshot.getKey();
+
+                    int commentIndex = mCommentIds.indexOf(commentKey);
+                    if (commentIndex > -1) {
+                        mCommentIds.remove(commentIndex);
+                        mComments.remove(commentIndex);
+                        notifyItemChanged(commentIndex);
+                    } else {
+                        Log.w(TAG, "onChildRemoved:unknown_child:" + commentKey);
+                    }
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot datasnapshot, @Nullable String previousChildName) {
+                    Log.d(TAG, "onChildMoved:" + datasnapshot.getKey());
+
+                    Comment movedComment = datasnapshot.getValue(Comment.class);
+                    String commentKey = datasnapshot.getKey();
 
                 }
 
                 @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.w(TAG, "postComments:onCancelled", databaseError.toException());
+                    Toast.makeText(mContext, "Failed to load comments.",
+                            Toast.LENGTH_SHORT).show();
                 }
+            };
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            ref.addListenerForSingleValueEvent(childEventListener);
+            mChildEventListener = childEventListener;
+        }
 
-                }
+        @Override
+        public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            View view = inflater.inflate(R.layout.item_comment, parent, false);
+            return new CommentViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(CommnetViewHolder holder, int position) {
+            Comment comment = mComments.get(position);
+            holder.authorView.setText(comment.author);
+            holder.bodyView.setText(comment.text);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mComments.size();
+        }
+
+        public void cleanupListener() {
+            if (mChildEventListener != null) {
+                mDatabaseReference.removeEventListener(mChildEventListener);
             }
         }
 
