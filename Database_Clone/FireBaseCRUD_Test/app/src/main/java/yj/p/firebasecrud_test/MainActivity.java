@@ -8,10 +8,16 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+
+import yj.p.firebasecrud_test.fragment.MyPostFragment;
+import yj.p.firebasecrud_test.fragment.MyTopPostsFragment;
+import yj.p.firebasecrud_test.fragment.RecentPostsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
         FragmentPagerAdapter mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             private final Fragment[] mFragments = new Fragment[]{
-                    new RecentPostFragment(),
-                    new MyPostsFragment(),
+                    new RecentPostsFragment(),
+                    new MyPostFragment(),
                     new MyTopPostsFragment(),
             };
 
@@ -49,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             public int getCount() { return mFragments.length; }
 
             @Override
-            public CharSequence getPageTitle(int position) { return mFragmentNamesp[position]; }
+            public CharSequence getPageTitle(int position) { return mFragmentNames[position]; }
 
         };
 
@@ -58,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         fabNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.class, NewPostActivity));
+                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
             }
         });
     }
@@ -73,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if(i == R.id.action_logout) {
-            FirebaseAuth.getInstance.sighOut();
+            FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, SignInActivity.class));
             finish();
             return true;

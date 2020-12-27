@@ -8,7 +8,7 @@ public class MyPostFragment extends PostListFragment{
     public MyPostFragment() {}
 
     @Override
-    public Query getQuery(DatabaseReference databaseReference) {
-        return databaseReference.child("user-posts").child(getUid());
+    public Query getQuery(DatabaseReference mDatabase) {
+        return mDatabase.child("user-posts").child(getUid());
     }
 }

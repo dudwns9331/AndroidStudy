@@ -5,6 +5,8 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class BaseActivity extends AppCompatActivity {
 
     private ProgressBar mProgressBar;
@@ -23,5 +25,5 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public String getUid() { return FirebaseAuth.getInstance.getCurrentUser().getUid(); }
+    public String getUid() { return FirebaseAuth.getInstance().getCurrentUser().getUid(); }
 }

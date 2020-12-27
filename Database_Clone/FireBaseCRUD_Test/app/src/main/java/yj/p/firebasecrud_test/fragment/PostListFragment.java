@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +38,7 @@ public abstract class PostListFragment extends Fragment {
     private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
+    private FirebaseAuth mAuth;
 
     public PostListFragment() {}
 
@@ -51,7 +53,7 @@ public abstract class PostListFragment extends Fragment {
         mRecycler = rootView.findViewById(R.id.messagesList);
         mRecycler.setHasFixedSize(true);
 
-        return true;
+        return rootView;
     }
 
     @Override
@@ -59,18 +61,20 @@ public abstract class PostListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mManager = new LinearLayoutManager(getActivity());
+        mAuth = FirebaseAuth.getInstance();
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
 
-        Query postQuery = getQuert(mDatabase);
+        Query postQuery = getQuery(mDatabase);
 
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
                 .setQuery(postQuery, Post.class)
                 .build();
 
-        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>() {
+        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(options) {
 
+            @NonNull
             @Override
             public PostViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -86,7 +90,7 @@ public abstract class PostListFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), PostDetailActivity.class);
-                        intent.putExra(PostDetailActivity.EXTRA_POST_KEY, postKey);
+                        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
                         startActivity(intent);
                     }
                 });
@@ -116,8 +120,9 @@ public abstract class PostListFragment extends Fragment {
     private void onStarClicked(DatabaseReference postRef) {
         postRef.runTransaction(new Transaction.Handler() {
 
+            @NonNull
             @Override
-            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+            public Transaction.Result doTransaction(MutableData mutableData) {
                 Post p = mutableData.getValue(Post.class);
                 if (p == null) {
                     return Transaction.success(mutableData);
@@ -160,7 +165,7 @@ public abstract class PostListFragment extends Fragment {
         }
     }
 
-
+    @NonNull
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }

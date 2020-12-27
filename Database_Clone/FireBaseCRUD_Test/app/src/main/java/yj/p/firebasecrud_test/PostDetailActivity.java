@@ -23,12 +23,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Comment;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import yj.p.firebasecrud_test.databinding.ActivityPostDetailBinding;
+import yj.p.firebasecrud_test.models.Post;
+import yj.p.firebasecrud_test.models.User;
+import yj.p.firebasecrud_test.models.Comment;
+
 
 public class PostDetailActivity extends BaseActivity implements View.OnClickListener {
 
@@ -54,7 +56,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         setContentView(binding.getRoot());
 
         buttonPostComment = findViewById(R.id.buttonPostComment);
-        RecyclerView = findViewById(R.id.recyclerPostComments);
+        recyclerPostComments = findViewById(R.id.recyclerPostComments);
 
 
         mPostKey = getIntent().getStringExtra(EXTRA_POST_KEY);
@@ -171,6 +173,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
             mDatabaseReference = ref;
 
             ChildEventListener childEventListener = new ChildEventListener() {
+
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot datasnapshot, @Nullable String previousChildName) {
                     Log.d(TAG, "onChildAdded:" + datasnapshot.getKey());
@@ -231,7 +234,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 }
             };
 
-            ref.addListenerForSingleValueEvent(childEventListener);
+            ref.addChildEventListener(childEventListener);
             mChildEventListener = childEventListener;
         }
 
@@ -243,7 +246,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         }
 
         @Override
-        public void onBindViewHolder(CommnetViewHolder holder, int position) {
+        public void onBindViewHolder(CommentViewHolder holder, int position) {
             Comment comment = mComments.get(position);
             holder.authorView.setText(comment.author);
             holder.bodyView.setText(comment.text);

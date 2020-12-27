@@ -19,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import yj.p.firebasecrud_test.models.Post;
+import yj.p.firebasecrud_test.models.User;
+
 public class NewPostActivity extends BaseActivity {
 
     private static final String TAG = "NewPostActivity";
@@ -82,7 +85,7 @@ public class NewPostActivity extends BaseActivity {
                     writeNewPost(userId, user.username, title, body);
                 }
 
-                setEditingEnable(true);
+                setEditingEnabled(true);
                 finish();
             }
 

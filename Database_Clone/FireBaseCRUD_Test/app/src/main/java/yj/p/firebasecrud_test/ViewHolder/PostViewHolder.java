@@ -7,13 +7,14 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import yj.p.firebasecrud_test.R;
+import yj.p.firebasecrud_test.models.Post;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
 
     public TextView titleView;
     public TextView authorView;
     public ImageView starView;
-    public TextView numStarView;
+    public TextView numStarsView;
     public TextView bodyView;
 
     public PostViewHolder(View itemView) {
@@ -30,7 +31,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public void bindToPost(Post post, View.OnClickListener starClickLitener) {
         titleView.setText(post.title);
         authorView.setText(post.author);
-        numStarView.setText(String.valueOf(post.starCount));
+        numStarsView.setText(String.valueOf(post.starCount));
         bodyView.setText(post.body);
 
         starView.setOnClickListener(starClickLitener);
