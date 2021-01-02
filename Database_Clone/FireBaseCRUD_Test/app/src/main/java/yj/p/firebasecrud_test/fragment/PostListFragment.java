@@ -29,6 +29,11 @@ import yj.p.firebasecrud_test.R;
 import yj.p.firebasecrud_test.ViewHolder.PostViewHolder;
 import yj.p.firebasecrud_test.models.Post;
 
+
+/**
+ * 추상 클래스 이용 Post에 필요한 ListFragment
+ * 모든 PostFragment에 포함되는 공통적인 내용이 들어간다. -> 여기서는 뷰의 실체화
+ */
 public abstract class PostListFragment extends Fragment {
 
     private static final String TAG = "PostListFragment";
@@ -49,7 +54,6 @@ public abstract class PostListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
         mRecycler = rootView.findViewById(R.id.messagesList);
         mRecycler.setHasFixedSize(true);
 

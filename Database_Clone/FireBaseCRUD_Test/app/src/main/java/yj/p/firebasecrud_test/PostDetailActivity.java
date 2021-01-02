@@ -32,10 +32,12 @@ import yj.p.firebasecrud_test.models.User;
 import yj.p.firebasecrud_test.models.Comment;
 
 
+/**
+ * post 클릭시 실행되는 엑티비티
+ */
 public class PostDetailActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "PostDetailActivity";
-
     public static final String EXTRA_POST_KEY = "post_key";
 
     private DatabaseReference mPostReference;
@@ -45,9 +47,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private CommentAdapter mAdapter;
     private ActivityPostDetailBinding binding;
 
-    MaterialButton buttonPostComment;
-    RecyclerView recyclerPostComments;
-    LinearLayout postAuthorLayout;
+    MaterialButton buttonPostComment;           // post 버튼
+    RecyclerView recyclerPostComments;          // post-comment가 표시되는 리사이클러 뷰
+    LinearLayout postAuthorLayout;              // post의 전체 요소가 담긴 LinearLayout
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -64,8 +66,10 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
             throw new IllegalArgumentException("Must pass EXTRA_Post_Key");
         }
 
+        // posts의 post_key 객체를 가져온다.
         mPostReference = FirebaseDatabase.getInstance().getReference()
                 .child("posts").child(mPostKey);
+        // post-comment의 post_key 객체를 가져온다.
         mCommentsReference = FirebaseDatabase.getInstance().getReference()
                 .child("post-comments").child(mPostKey);
 
@@ -78,14 +82,16 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     public void onStart() {
         super.onStart();
 
+        // 엑티비티가 시작될 때마다 수행된다.
+        // 데이터베이스에 있는 값 불러옴
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
 
-                Post post = datasnapshot.getValue(Post.class);
-                binding.postAuthorLayout.postAuthor.setText(post.author);
-                binding.postTextLayout.postTitle.setText(post.title);
-                binding.postTextLayout.postBody.setText(post.body);
+                Post post = datasnapshot.getValue(Post.class);              // 데이터베이스의 post값들을 가져옴
+                binding.postAuthorLayout.postAuthor.setText(post.author);   // 레이아웃에 지정
+                binding.postTextLayout.postTitle.setText(post.title);       // 타이틀 지정
+                binding.postTextLayout.postBody.setText(post.body);         // 내용 지정
             }
 
             @Override
@@ -95,9 +101,12 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
             }
 
         };
+
+        // 값을 가져올때마다 리스너를 쓴다.
         mPostReference.addValueEventListener(postListener);
         mPostListener = postListener;
 
+        // comment를 담을 리사이클러뷰의 어댑터를 지정한다.
         mAdapter = new CommentAdapter(this, mCommentsReference);
         binding.recyclerPostComments.setAdapter(mAdapter);
     }
@@ -106,10 +115,11 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     public void onStop() {
         super.onStop();
 
+        // 어댑터의 리스너를 지워준다.
         if (mPostListener != null) {
             mPostReference.removeEventListener(mPostListener);
         }
-
+        // 어댑터의 내용 초기화
         mAdapter.cleanupListener();
     }
 
@@ -117,23 +127,28 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.buttonPostComment) {
+            // post버튼 눌렸을때 실행한다. comment 추가 수행
             postComment();
         }
     }
 
     private void postComment() {
+        // uid를 가져온다. ex)   8E1iRw6dgwPeWlELpKn6xzF9bUp1
         final String uid = getUid();
         FirebaseDatabase.getInstance().getReference().child("users").child(uid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot datasnapshot) {
 
+                        // user 데이터 모델에서 email, username을 가져온다.
                         User user = datasnapshot.getValue(User.class);
                         String authorName = user.username;
 
                         String commentText = binding.fieldCommentText.getText().toString();
+                        // 얻은 uid를 통해서 comment를 추가한다.
                         Comment comment = new Comment(uid, authorName, commentText);
-
+                        // comment의 값을 추가한다. uid, authorName, commentText
+                        // post-comment -> UserId -> author, text, uid
                         mCommentsReference.push().setValue(comment);
 
                         binding.fieldCommentText.setText(null);
@@ -146,6 +161,10 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 });
     }
 
+    /**
+     * CommentView의 홀더
+     * 댓글의 구성요소를 지정해준다.
+     */
     private static class CommentViewHolder extends RecyclerView.ViewHolder {
 
         public TextView authorView;
@@ -159,6 +178,10 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+    /**
+     * 댓글 어댑터
+     * 달린 댓글의 리싸이클러 뷰를 관리하는 어댑터
+     */
     private static class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
 
         private Context mContext;
@@ -168,6 +191,11 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         private List<String> mCommentIds = new ArrayList<>();
         private List<Comment> mComments = new ArrayList<>();
 
+        /**
+         * 어댑터의 생성
+         * @param context
+         * @param ref
+         */
         public CommentAdapter(final Context context, DatabaseReference ref) {
             mContext = context;
             mDatabaseReference = ref;
@@ -178,6 +206,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 public void onChildAdded(@NonNull DataSnapshot datasnapshot, @Nullable String previousChildName) {
                     Log.d(TAG, "onChildAdded:" + datasnapshot.getKey());
 
+                    // 댓글이 추가 되었을때, 데이터베이스에서 값을 가져오고 List에 값을 추가한다.
+
                     Comment comment = datasnapshot.getValue(Comment.class);
 
                     mCommentIds.add(datasnapshot.getKey());
@@ -185,6 +215,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                     notifyItemInserted(mComments.size() - 1);
                 }
 
+                // 댓글의 내용이 바뀌면
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot datasnapshot, @Nullable String previousChildName) {
                     Log.d(TAG, "onChildChanged:" + datasnapshot.getKey());
@@ -201,6 +232,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                     }
                 }
 
+                // 댓글의 내용이 지워지면
                 @Override
                 public void onChildRemoved(@NonNull DataSnapshot datasnapshot) {
                     Log.d(TAG, "onChildRemoved:" + datasnapshot.getKey());
@@ -217,6 +249,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                     }
                 }
 
+                // 댓글이 이동하면
                 @Override
                 public void onChildMoved(@NonNull DataSnapshot datasnapshot, @Nullable String previousChildName) {
                     Log.d(TAG, "onChildMoved:" + datasnapshot.getKey());
@@ -238,6 +271,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
             mChildEventListener = childEventListener;
         }
 
+        // onCreateViewHolder를 통해서 ViewHolder 객체 실체화
         @Override
         public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
