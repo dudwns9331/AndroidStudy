@@ -1,11 +1,7 @@
 package yj.p.kotlinclone1
 
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Base64
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.AccessToken
@@ -24,8 +20,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 
 
 class LoginActivity : AppCompatActivity() {
@@ -72,10 +66,10 @@ class LoginActivity : AppCompatActivity() {
         startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
     }
 
-
+/*
     fun printHashKey() {
         try {
-            val info: PackageInfo = packageManager.getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES)
+            val info: PackageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
             for (signature in info.signatures) {
                 val md: MessageDigest = MessageDigest.getInstance("SHA")
                 md.update(signature.toByteArray())
@@ -88,8 +82,8 @@ class LoginActivity : AppCompatActivity() {
             Log.e("TAG", "printHashKey()", e)
         }
     }
-
-    fun facebookLogin() {
+*/
+    private fun facebookLogin() {
         LoginManager.getInstance()
                 .logInWithReadPermissions(this, listOf("public_profile", "email"))
 
@@ -154,7 +148,7 @@ class LoginActivity : AppCompatActivity() {
                 }
     }
 
-    fun signinAndSignup() {
+    private fun signinAndSignup() {
         auth?.createUserWithEmailAndPassword(email_editText.text.toString(),
                 password_editText.text.toString())?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -170,7 +164,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun signinEmail() {
+    private fun signinEmail() {
         auth?.createUserWithEmailAndPassword(email_editText.text.toString(),
                 password_editText.text.toString())?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -183,7 +177,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun moveMainPage(user: FirebaseUser?) {
+    private fun moveMainPage(user: FirebaseUser?) {
         if (user != null) {
             startActivity(Intent(this, MainActivity::class.java))
         }
