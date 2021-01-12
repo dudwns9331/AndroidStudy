@@ -40,7 +40,6 @@ class AddPhotoActivity : AppCompatActivity() {
         addphoto_btn_upload.setOnClickListener {
             contentUpload()
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
