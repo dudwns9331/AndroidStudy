@@ -16,13 +16,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
 import yj.p.kotlinclone1.LoginActivity
 import yj.p.kotlinclone1.MainActivity
 import yj.p.kotlinclone1.R
+import yj.p.kotlinclone1.navigation.model.AlarmDTO
 import yj.p.kotlinclone1.navigation.model.ContentDTO
 import yj.p.kotlinclone1.navigation.model.FollowDTO
+import yj.p.kotlinclone1.navigation.util.FcmPush
 
 
 class UserFragment : Fragment() {
@@ -33,6 +36,11 @@ class UserFragment : Fragment() {
     var auth : FirebaseAuth? = null
 
     var currentUserUid : String? = null
+
+    var followListenerRegistration: ListenerRegistration? = null
+    var followingListenerRegistration: ListenerRegistration? = null
+    var imageprofileListenerRegistration: ListenerRegistration? = null
+    var recyclerListenerRegistration: ListenerRegistration? = null
 
     companion object {
         var PICK_PROFILE_FROM_ALBUM = 10
@@ -123,7 +131,7 @@ class UserFragment : Fragment() {
                 followDTO = FollowDTO()
                 followDTO!!.followingCount = 1
                 followDTO!!.followers[uid!!] = true
-
+                follwerAlarm(uid!!)
                 transaction.set(tsDocFollowing, followDTO)
                 return@runTransaction
             }
@@ -138,6 +146,7 @@ class UserFragment : Fragment() {
                 // It add my follower when I follow a third person
                 followDTO.followingCount = followDTO!!.followingCount + 1
                 followDTO.followings[currentUserUid!!] = true
+                follwerAlarm(uid!!)
             }
             transaction.set(tsDocFollowing,followDTO!!)
             return@runTransaction
@@ -169,13 +178,25 @@ class UserFragment : Fragment() {
         }
     }
 
+    fun follwerAlarm(destinationUid : String) {
+        var alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid = destinationUid
+        alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+        alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+        alarmDTO.kind = 2
+        alarmDTO.timestamp = System.currentTimeMillis()
+        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+        var message = auth?.currentUser?.email + getString(R.string.alarm_follow)
+        FcmPush.instance.sendMessage(destinationUid, "Howlstagram", message)
+    }
 
     fun getProfileImage() {
         firestore?.collection("profileImages")?.document(uid!!)?.addSnapshotListener{ documentSnapshot, error ->
             if (documentSnapshot == null) return@addSnapshotListener
             if (documentSnapshot.data != null) {
                 var url = documentSnapshot?.data!!["image"]
-                Glide.with(activity!!).load(url).apply(RequestOptions.circleCropTransform()).into(fragmentView?.account_iv_profile!!)
+                Glide.with(activity!!).load(url).apply(RequestOptions().circleCrop()).into(fragmentView?.account_iv_profile!!)
 
             }
         }
@@ -220,5 +241,13 @@ class UserFragment : Fragment() {
             Glide.with(p0.imageview.context).load(contentDTOs[p1].imageUri).apply(RequestOptions().centerCrop()).into(imageview)
         }
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        followListenerRegistration?.remove()
+        followingListenerRegistration?.remove()
+        imageprofileListenerRegistration?.remove()
+        recyclerListenerRegistration?.remove()
     }
 }

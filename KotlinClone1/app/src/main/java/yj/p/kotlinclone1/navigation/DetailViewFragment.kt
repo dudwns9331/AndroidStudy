@@ -1,6 +1,7 @@
 package yj.p.kotlinclone1.navigation
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,9 @@ import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.item_detail.view.*
 import yj.p.kotlinclone1.R
+import yj.p.kotlinclone1.navigation.model.AlarmDTO
 import yj.p.kotlinclone1.navigation.model.ContentDTO
+import yj.p.kotlinclone1.navigation.util.FcmPush
 
 class DetailViewFragment : Fragment() {
 
@@ -115,6 +118,13 @@ class DetailViewFragment : Fragment() {
                 activity?.supportFragmentManager?.beginTransaction()
                     ?.replace(R.id.main_content, fragment)?.commit()
             }
+
+            viewholder.detailviewitem_comment_imageview.setOnClickListener { v ->
+                var intent = Intent(v.context, CommentActivity::class.java)
+                intent.putExtra("contentUid", contentUidList[p1])
+                intent.putExtra("destinationUid", contentDTOs[p1].uid)
+                startActivity(intent)
+            }
         }
 
         // 좋아요 버튼 이벤트
@@ -132,10 +142,23 @@ class DetailViewFragment : Fragment() {
                     // whent the button is not clicked
                     contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
                     contentDTO?.favorites[uid!!] = true
+                    favoriteAlarm(contentDTOs[position].uid!!)
                 }
                 transaction.set(tsDoc, contentDTO)
             }
         }
 
+        fun favoriteAlarm(destinationUid : String) {
+            var alarmDTO = AlarmDTO()
+            alarmDTO.destinationUid = destinationUid
+            alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+            alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+            alarmDTO.kind = 0
+            alarmDTO.timestamp = System.currentTimeMillis()
+            FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+            var message = FirebaseAuth.getInstance()?.currentUser?.email + getString(R.string.alarm_favorite)
+            FcmPush.instance.sendMessage(destinationUid, "Howlstagram", message)
+        }
     }
 }
